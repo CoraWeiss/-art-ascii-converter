@@ -12,21 +12,16 @@ ASCII_CHARS = %w[@ # 8 & o : * .].freeze
 def convert_to_ascii(image_path, output_path)
   image = MiniMagick::Image.open(image_path)
   image.resize "100x100"
-  png = ChunkyPNG::Image.from_io(image.to_blob)
+  png = ChunkyPNG::Image.from_blob(image.to_blob)
 
-  ascii_art = ""
-
-  (0...png.height).each do |y|
-    (0...png.width).each do |x|
+  ascii_art = png.height.times.map do |y|
+    png.width.times.map do |x|
       pixel = png[x, y]
-      r = ChunkyPNG::Color.r(pixel)
-      g = ChunkyPNG::Color.g(pixel)
-      b = ChunkyPNG::Color.b(pixel)
+      r, g, b = ChunkyPNG::Color.r(pixel), ChunkyPNG::Color.g(pixel), ChunkyPNG::Color.b(pixel)
       grayscale = pixel_to_grayscale(r, g, b)
-      ascii_art += ASCII_CHARS[(grayscale * (ASCII_CHARS.length - 1) / 255)]
-    end
-    ascii_art += "\n"
-  end
+      ASCII_CHARS[(grayscale * (ASCII_CHARS.length - 1) / 255)]
+    end.join
+  end.join("\n")
 
   File.write(output_path, ascii_art)
 end
