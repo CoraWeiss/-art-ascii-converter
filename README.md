@@ -4,6 +4,8 @@
 ## Overview
 `art-ascii-converter` is a Ruby script that converts public domain images, such as paintings from The Met Museum's open source collection, into ASCII art.
 
+the repository exists at https://github.com/CoraWeiss/art-ascii-converter.
+
 ## Features
 - Convert any image to ASCII art
 - Supports resizing images to fit the terminal window
